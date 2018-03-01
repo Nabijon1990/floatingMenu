@@ -269,6 +269,10 @@ public class FloatingMenuButton extends FrameLayout implements View.OnTouchListe
         addView(floatingSubButton, layoutParams);
     }
 
+    public void removeFloatingSubButton(FloatingSubButton floatingSubButton) {
+        removeView(floatingSubButton);
+    }
+
     private void addViewToCurrentContainer(View view) {
         addViewToCurrentContainer(view, null);
     }
