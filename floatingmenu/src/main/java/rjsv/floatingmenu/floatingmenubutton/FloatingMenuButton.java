@@ -156,7 +156,7 @@ public class FloatingMenuButton extends FrameLayout implements View.OnTouchListe
         } catch (Exception e) {
             try {
                 Log.e(TAG, e.getMessage());
-            } catch (Exception e) {
+            } catch (Exception ex) {
                 Log.e(TAG, "unknown exception (println needs message)");
             }
         }
