@@ -61,6 +61,7 @@ public class FloatingMenuButton extends FrameLayout implements View.OnTouchListe
     private float screenWidth, screenHeight;
     private float viewWidth, viewHeight;
     private int mActivePointerId = INVALID_POINTER_ID;
+    private int hiddenButtonsCount = 0;
 
 
     // Constructors
@@ -203,7 +204,7 @@ public class FloatingMenuButton extends FrameLayout implements View.OnTouchListe
         if (menuAnimationHandler != null && !menuAnimationHandler.isAnimating()) {
             Pair<Integer, Integer> angles = calculateDispositionAngles();
             Point center = calculateItemPositions(angles.first, angles.second);
-            for (int i = 0; i < subMenuButtons.size(); i++) {
+            for (int i = 0; i < subMenuButtons.size() - hiddenButtonsCount; i++) {
                 SubButton currentSubButton = subMenuButtons.get(i);
                 if (subMenuButtons.get(i).getView().getParent() == null) {
                     FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(currentSubButton.getWidth(), currentSubButton.getHeight(), Gravity.TOP | Gravity.START);
@@ -271,6 +272,16 @@ public class FloatingMenuButton extends FrameLayout implements View.OnTouchListe
 
     public void removeFloatingSubButton(FloatingSubButton floatingSubButton) {
         removeView(floatingSubButton);
+    }
+
+    public void hideFloatingSubButton(FloatingSubButton floatingSubButton) {
+        floatingSubButton.setVisibility(View.GONE);
+        hiddenButtonsCount++;
+    }
+
+    public void showFloatingSubButton(FloatingSubButton floatingSubButton) {
+        floatingSubButton.setVisibility(View.VISIBLE);
+        hiddenButtonsCount--;
     }
 
     private void addViewToCurrentContainer(View view) {
