@@ -348,9 +348,9 @@ public class FloatingMenuButton extends FrameLayout implements View.OnTouchListe
         // Prevent overlapping when it is a full circle
         int divisor;
         if (Math.abs(endAngle - startAngle) >= 360 || subMenuButtons.size() <= 1) {
-            divisor = subMenuButtons.size();
+            divisor = subMenuButtons.size() - hiddenButtonsCount;
         } else {
-            divisor = subMenuButtons.size() - 1;
+            divisor = subMenuButtons.size() - 1 - hiddenButtonsCount;
         }
         // Measure the path in order to find points that have the same distance between each other
         for (int i = 0; i < subMenuButtons.size(); i++) {

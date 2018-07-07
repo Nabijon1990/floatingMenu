@@ -4,9 +4,12 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.view.animation.FastOutLinearInInterpolator;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
+import android.view.Gravity;
+import android.view.ViewGroup;
 
 import rjsv.floatingmenu.animation.enumerators.AnimationType;
 import rjsv.floatingmenu.floatingmenubutton.FloatingMenuButton;
+import rjsv.floatingmenu.floatingmenubutton.subbutton.FloatingSubButton;
 
 public class MainActivity extends Activity {
 
@@ -37,6 +40,20 @@ public class MainActivity extends Activity {
                 .shouldRotate(false)
         ;
 
+        FloatingSubButton fab = new FloatingSubButton(this);
+        FloatingSubButton.LayoutParams layoutparams = new FloatingSubButton.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.CENTER_HORIZONTAL|Gravity.CENTER_VERTICAL);
+        fab.setLayoutParams(layoutparams);
+        fab.setBackground(getResources().getDrawable(R.drawable.one));
+        fab_1.addFloatingSubButton(fab);
+
+        FloatingSubButton fab2 = new FloatingSubButton(this);
+        FloatingSubButton.LayoutParams layoutparams2 = new FloatingSubButton.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.CENTER_HORIZONTAL|Gravity.CENTER_VERTICAL);
+        fab.setLayoutParams(layoutparams2);
+        fab.setBackground(getResources().getDrawable(R.drawable.one));
+        fab_1.addFloatingSubButton(fab2);
+        fab_1.hideFloatingSubButton(fab);
+        fab_1.hideFloatingSubButton(fab2);
+
         fab_2 = (FloatingMenuButton) findViewById(R.id.fab_2);
         fab_2.setStartAngle(0)
                 .setEndAngle(360)
@@ -53,5 +70,6 @@ public class MainActivity extends Activity {
                 .shouldRotate(false)
         ;
 
+        fab_1.hideFloatingSubButton((FloatingSubButton) findViewById(R.id.fab_2_sub_fab_left_1));
     }
 }
