@@ -51,8 +51,23 @@ public class MainActivity extends Activity {
         fab.setLayoutParams(layoutparams2);
         fab.setBackground(getResources().getDrawable(R.drawable.one));
         fab_1.addFloatingSubButton(fab2);
-        fab_1.hideFloatingSubButton(fab);
-        fab_1.hideFloatingSubButton(fab2);
+
+        FloatingSubButton fab3 = new FloatingSubButton(this);
+        FloatingSubButton.LayoutParams layoutparams3 = new FloatingSubButton.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.CENTER_HORIZONTAL|Gravity.CENTER_VERTICAL);
+        fab.setLayoutParams(layoutparams3);
+        fab.setBackground(getResources().getDrawable(R.drawable.one));
+        fab_1.addFloatingSubButton(fab3);
+
+        FloatingSubButton fab4 = new FloatingSubButton(this);
+        FloatingSubButton.LayoutParams layoutparams4 = new FloatingSubButton.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.CENTER_HORIZONTAL|Gravity.CENTER_VERTICAL);
+        fab.setLayoutParams(layoutparams4);
+        fab.setBackground(getResources().getDrawable(R.drawable.one));
+        fab_1.addFloatingSubButton(fab4);
+
+        fab_1.removeFloatingSubButton(fab2);
+        fab_1.removeFloatingSubButton(fab3);
+        fab_1.removeFloatingSubButton(fab4);
+//        fab_1.addView(fab2);
 
         fab_2 = (FloatingMenuButton) findViewById(R.id.fab_2);
         fab_2.setStartAngle(0)
@@ -70,6 +85,6 @@ public class MainActivity extends Activity {
                 .shouldRotate(false)
         ;
 
-        fab_1.hideFloatingSubButton((FloatingSubButton) findViewById(R.id.fab_2_sub_fab_left_1));
+//        fab_1.hideFloatingSubButton((FloatingSubButton) findViewById(R.id.fab_2_sub_fab_left_1));
     }
 }

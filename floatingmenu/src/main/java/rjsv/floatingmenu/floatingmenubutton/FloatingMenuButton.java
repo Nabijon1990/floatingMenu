@@ -16,8 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import rjsv.floatingmenu.R;
 import rjsv.floatingmenu.animation.enumerators.AnimationType;
@@ -49,7 +49,7 @@ public class FloatingMenuButton extends FrameLayout implements View.OnTouchListe
     private boolean isAnchored = false;
     private boolean isMenuOpened = false;
     private Context context;
-    private List<SubButton> subMenuButtons;
+    private CopyOnWriteArrayList<SubButton> subMenuButtons;
     private FloatingMenuAnimationHandler menuAnimationHandler;
     private FloatingMenuStateChangeListener stateChangeListener;
     private FloatingMenuButtonClickListener floatingMenuActionButtonClickListener;
@@ -76,7 +76,7 @@ public class FloatingMenuButton extends FrameLayout implements View.OnTouchListe
     public FloatingMenuButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.context = context;
-        subMenuButtons = new ArrayList<>();
+        subMenuButtons = new CopyOnWriteArrayList<>();
         menuAnimationHandler = new FloatingMenuAnimationHandler(this);
         floatingMenuActionButtonClickListener = new FloatingMenuButtonClickListener();
         if (attrs != null) {
@@ -183,6 +183,22 @@ public class FloatingMenuButton extends FrameLayout implements View.OnTouchListe
         }
     }
 
+    public void removeView(View child, ViewGroup.LayoutParams params) {
+        if (child instanceof FloatingSubButton) {
+            for(SubButton button : subMenuButtons) {
+                if(button.getView() == child) {
+                    if (button.getWidth() == 0 || button.getHeight() == 0) {
+                        removeViewFromCurrentContainer(button.getView());
+                        button.setAlpha(0);
+                        button.getView().post(new SubButtonViewQueueListener(FloatingMenuButton.this, button));
+                    }
+
+                    subMenuButtons.remove(button);
+                }
+            }
+        }
+    }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -271,17 +287,7 @@ public class FloatingMenuButton extends FrameLayout implements View.OnTouchListe
     }
 
     public void removeFloatingSubButton(FloatingSubButton floatingSubButton) {
-        removeView(floatingSubButton);
-    }
-
-    public void hideFloatingSubButton(FloatingSubButton floatingSubButton) {
-        floatingSubButton.setVisibility(View.GONE);
-        hiddenButtonsCount++;
-    }
-
-    public void showFloatingSubButton(FloatingSubButton floatingSubButton) {
-        floatingSubButton.setVisibility(View.VISIBLE);
-        hiddenButtonsCount--;
+        removeView(floatingSubButton, null);
     }
 
     private void addViewToCurrentContainer(View view) {
