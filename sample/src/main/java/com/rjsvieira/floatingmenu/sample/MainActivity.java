@@ -63,10 +63,11 @@ public class MainActivity extends Activity {
         fab.setLayoutParams(layoutparams4);
         fab.setBackground(getResources().getDrawable(R.drawable.one));
         fab_1.addFloatingSubButton(fab4);
+        fab_1.addFloatingSubButton(fab4);
 
         fab_1.removeFloatingSubButton(fab2);
-        fab_1.removeFloatingSubButton(fab3);
-        fab_1.removeFloatingSubButton(fab4);
+        fab_1.removeFloatingSubButton(fab2);
+//        fab_1.removeFloatingSubButton(fab4);
 //        fab_1.addView(fab2);
 
         fab_2 = (FloatingMenuButton) findViewById(R.id.fab_2);

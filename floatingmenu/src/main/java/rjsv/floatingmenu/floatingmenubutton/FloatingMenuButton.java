@@ -172,13 +172,23 @@ public class FloatingMenuButton extends FrameLayout implements View.OnTouchListe
                 params = subMenuButtons.get(0).getView().getLayoutParams();
             }
             child.setLayoutParams(params);
-            SubButton button = new SubButton(child, 0, 0);
-            setDefaultImage(button.getView());
-            subMenuButtons.add(button);
-            if (button.getWidth() == 0 || button.getHeight() == 0) {
-                addViewToCurrentContainer(button.getView());
-                button.setAlpha(0);
-                button.getView().post(new SubButtonViewQueueListener(FloatingMenuButton.this, button));
+
+            Boolean exists = false;
+            for(SubButton button : subMenuButtons) {
+                if(button.getView().getId() == child.getId()) {
+                    exists = true;
+                }
+            }
+
+            if(!exists) {
+                SubButton button = new SubButton(child, 0, 0);
+                setDefaultImage(button.getView());
+                subMenuButtons.add(button);
+                if (button.getWidth() == 0 || button.getHeight() == 0) {
+                    addViewToCurrentContainer(button.getView());
+                    button.setAlpha(0);
+                    button.getView().post(new SubButtonViewQueueListener(FloatingMenuButton.this, button));
+                }
             }
         }
     }
@@ -186,7 +196,7 @@ public class FloatingMenuButton extends FrameLayout implements View.OnTouchListe
     public void removeView(View child, ViewGroup.LayoutParams params) {
         if (child instanceof FloatingSubButton) {
             for(SubButton button : subMenuButtons) {
-                if(button.getView() == child) {
+                if(button.getView().getId() == child.getId()) {
                     if (button.getWidth() == 0 || button.getHeight() == 0) {
                         removeViewFromCurrentContainer(button.getView());
                         button.setAlpha(0);
