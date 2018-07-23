@@ -189,6 +189,13 @@ public class FloatingMenuButton extends FrameLayout implements View.OnTouchListe
                     button.setAlpha(0);
                     button.getView().post(new SubButtonViewQueueListener(FloatingMenuButton.this, button));
                 }
+            } else {
+                for(SubButton subButton : subMenuButtons) {
+                    if(subButton.getView().getId() == child.getId()) {
+                        subButton.getView().setVisibility(View.VISIBLE);
+                        break;
+                    }
+                }
             }
         }
     }
