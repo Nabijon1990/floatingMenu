@@ -174,13 +174,13 @@ public class FloatingMenuButton extends FrameLayout implements View.OnTouchListe
             child.setLayoutParams(params);
 
             Boolean exists = false;
-            for(SubButton button : subMenuButtons) {
-                if(button.getView().getId() == child.getId()) {
+            for (SubButton button : subMenuButtons) {
+                if (button.getView().getId() == child.getId()) {
                     exists = true;
                 }
             }
 
-            if(!exists) {
+            if (!exists) {
                 SubButton button = new SubButton(child, 0, 0);
                 setDefaultImage(button.getView());
                 subMenuButtons.add(button);
@@ -190,30 +190,30 @@ public class FloatingMenuButton extends FrameLayout implements View.OnTouchListe
                     button.getView().post(new SubButtonViewQueueListener(FloatingMenuButton.this, button));
                 }
             } else {
-                for(SubButton subButton : subMenuButtons) {
-                    if(subButton.getView().getId() == child.getId()) {
+                for (SubButton subButton : subMenuButtons) {
+                    if (subButton.getView().getId() == child.getId()) {
                         subButton.getView().setVisibility(View.VISIBLE);
                         break;
                     }
                 }
             }
         }
+        reOpenMenu(new Point((int) currentPositionX,(int) currentPositionY));
     }
 
     public void removeView(View child, ViewGroup.LayoutParams params) {
         if (child instanceof FloatingSubButton) {
-            for(SubButton button : subMenuButtons) {
-                if(button.getView().getId() == child.getId()) {
-                    if (button.getWidth() == 0 || button.getHeight() == 0) {
-                        removeViewFromCurrentContainer(button.getView());
-                        button.setAlpha(0);
-                        button.getView().post(new SubButtonViewQueueListener(FloatingMenuButton.this, button));
-                    }
+            for (SubButton button : subMenuButtons) {
+                if (button.getView().getId() == child.getId()) {
+                    removeViewFromCurrentContainer(button.getView());
+                    button.setAlpha(0);
+                    button.getView().post(new SubButtonViewQueueListener(FloatingMenuButton.this, button));
 
                     subMenuButtons.remove(button);
                 }
             }
         }
+        reOpenMenu(new Point((int) currentPositionX,(int) currentPositionY));
     }
 
     @Override
