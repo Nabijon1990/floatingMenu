@@ -179,8 +179,6 @@ public class FloatingMenuButton extends FrameLayout implements View.OnTouchListe
                     exists = true;
                 }
             }
-
-            if(!exists) {
                 SubButton button = new SubButton(child, 0, 0);
                 setDefaultImage(button.getView());
                 subMenuButtons.add(button);
@@ -189,19 +187,6 @@ public class FloatingMenuButton extends FrameLayout implements View.OnTouchListe
                     button.setAlpha(0);
                     button.getView().post(new SubButtonViewQueueListener(FloatingMenuButton.this, button));
                 }
-            } else {
-                for(SubButton subButton : subMenuButtons) {
-                    if(subButton.getView().getId() == child.getId()) {
-                        subButton.getView().setVisibility(View.VISIBLE);
-                        break;
-                    }
-                }
-            }
-            if (isMenuOpened){
-                Pair<Integer, Integer> angles = calculateDispositionAngles();
-                Point center = calculateItemPositions(angles.first, angles.second);
-                reOpenMenu(center);
-            }
         }
     }
 
