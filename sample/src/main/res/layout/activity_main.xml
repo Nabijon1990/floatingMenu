@@ -96,6 +96,13 @@
 		floatingMenuActionButton:dispositionStartAngle="0"
 		floatingMenuActionButton:subActionButtonRadius="100">
 
+		<rjsv.floatingmenu.floatingmenubutton.subbutton.FloatingSubButton
+			android:id="@+id/fab_1_sub_fab_left_1"
+			android:layout_width="50dp"
+			android:layout_height="50dp"
+			android:background="@drawable/one" />
+
+
 	</rjsv.floatingmenu.floatingmenubutton.FloatingMenuButton>
 
 </android.support.constraint.ConstraintLayout>
