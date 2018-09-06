@@ -43,7 +43,6 @@ public class MainActivity extends Activity {
                 .shouldFade(true)
                 .shouldScale(true)
                 .shouldRotate(false);
-        fab_1.openMenu();
 
         addFab.setOnClickListener(new View.OnClickListener() {
             @Override
