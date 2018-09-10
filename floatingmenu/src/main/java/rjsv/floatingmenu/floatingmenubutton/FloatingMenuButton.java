@@ -46,11 +46,10 @@ public class FloatingMenuButton extends FrameLayout implements View.OnTouchListe
     private int startAngle = 0, endAngle = 180;
     private int preservedStartAngle = 0, preservedEndAngle = 180;
     private int radius;
+    private int open = 0;
     private boolean isAnchored = false;
     private boolean isMenuOpened = false;
-    private boolean isMenuFirstOpen = true;
     private Context context;
-    private int first = 0;
     private CopyOnWriteArrayList<SubButton> subMenuButtons;
     private FloatingMenuAnimationHandler menuAnimationHandler;
     private FloatingMenuStateChangeListener stateChangeListener;
@@ -96,7 +95,7 @@ public class FloatingMenuButton extends FrameLayout implements View.OnTouchListe
         setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                toggleMenu(0);
+                toggleMenu();
             }
         });
         setOnTouchListener(this);
@@ -171,22 +170,18 @@ public class FloatingMenuButton extends FrameLayout implements View.OnTouchListe
     public void addView(View child, ViewGroup.LayoutParams params) {
         if (child instanceof FloatingSubButton) {
             if (params == null) {
-                final float scale = getContext().getResources().getDisplayMetrics().density;
-                int x = (int) (50 * scale + 0.5f);
-                int y = (int) (50 * scale + 0.5f);
-                params = new LayoutParams(x, y);
-//                params = subMenuButtons.get(0).getView().getLayoutParams();
+                params = subMenuButtons.get(0).getView().getLayoutParams();
             }
             child.setLayoutParams(params);
 
             Boolean exists = false;
-            for (SubButton button : subMenuButtons) {
-                if (button.getView().getId() == child.getId()) {
+            for(SubButton button : subMenuButtons) {
+                if(button.getView().getId() == child.getId()) {
                     exists = true;
                 }
             }
 
-            if (!exists) {
+            if(!exists) {
                 SubButton button = new SubButton(child, 0, 0);
                 setDefaultImage(button.getView());
                 subMenuButtons.add(button);
@@ -196,34 +191,30 @@ public class FloatingMenuButton extends FrameLayout implements View.OnTouchListe
                     button.getView().post(new SubButtonViewQueueListener(FloatingMenuButton.this, button));
                 }
             } else {
-                for (SubButton subButton : subMenuButtons) {
-                    if (subButton.getView().getId() == child.getId()) {
+                for(SubButton subButton : subMenuButtons) {
+                    if(subButton.getView().getId() == child.getId()) {
                         subButton.getView().setVisibility(View.VISIBLE);
                         break;
                     }
                 }
             }
         }
-        Pair<Integer, Integer> angles = calculateDispositionAngles();
-        Point center = calculateItemPositions(angles.first, angles.second);
-        reOpenMenu(center);
     }
 
     public void removeView(View child, ViewGroup.LayoutParams params) {
         if (child instanceof FloatingSubButton) {
-            for (SubButton button : subMenuButtons) {
-                if (button.getView().getId() == child.getId()) {
-                    removeViewFromCurrentContainer(button.getView());
-                    button.setAlpha(0);
-                    button.getView().post(new SubButtonViewQueueListener(FloatingMenuButton.this, button));
+            for(SubButton button : subMenuButtons) {
+                if(button.getView().getId() == child.getId()) {
+                    if (button.getWidth() == 0 || button.getHeight() == 0) {
+                        removeViewFromCurrentContainer(button.getView());
+                        button.setAlpha(0);
+                        button.getView().post(new SubButtonViewQueueListener(FloatingMenuButton.this, button));
+                    }
 
                     subMenuButtons.remove(button);
                 }
             }
         }
-        Pair<Integer, Integer> angles = calculateDispositionAngles();
-        Point center = calculateItemPositions(angles.first, angles.second);
-        reOpenMenu(center);
     }
 
     @Override
@@ -243,9 +234,8 @@ public class FloatingMenuButton extends FrameLayout implements View.OnTouchListe
         floatingMenuActionButtonClickListener.addClickListener(l);
     }
 
-    public void openMenu(int first) {
-        Log.d("Mrc","openMenu()");
-        this.first = first;
+    public void openMenu(int open) {
+        this.open = open;
         if (menuAnimationHandler != null && !menuAnimationHandler.isAnimating()) {
             Pair<Integer, Integer> angles = calculateDispositionAngles();
             Point center = calculateItemPositions(angles.first, angles.second);
@@ -263,9 +253,9 @@ public class FloatingMenuButton extends FrameLayout implements View.OnTouchListe
                 stateChangeListener.onMenuOpened(this);
             }
         }
-        if (first == 0){
+        if (open == 0){
             openMenu(1);
-            this.first++;
+            this.open = 1;
         }
     }
 
@@ -289,11 +279,11 @@ public class FloatingMenuButton extends FrameLayout implements View.OnTouchListe
         isMenuOpened = false;
     }
 
-    public void toggleMenu(int first) {
+    public void toggleMenu() {
         if (isMenuOpened) {
             closeMenu();
         } else {
-            openMenu(first);
+            openMenu(0);
         }
     }
 
@@ -352,9 +342,6 @@ public class FloatingMenuButton extends FrameLayout implements View.OnTouchListe
         if (vg != null) {
             vg.removeView(view);
         }
-//        Pair<Integer, Integer> angles = calculateDispositionAngles();
-//        Point center = calculateItemPositions(angles.first, angles.second);
-//        reOpenMenu(center);
     }
 
 
