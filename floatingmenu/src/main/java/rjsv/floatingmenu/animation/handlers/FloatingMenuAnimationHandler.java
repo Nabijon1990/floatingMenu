@@ -354,7 +354,7 @@ public class FloatingMenuAnimationHandler extends AnimationHandler implements An
         setAnimating(false);
         if (MenuState.REOPENING == currentState) {
             cancelMenuAnimations();
-            floatingMenuButton.openMenu();
+            floatingMenuButton.openMenu(0);
         }
     }
 

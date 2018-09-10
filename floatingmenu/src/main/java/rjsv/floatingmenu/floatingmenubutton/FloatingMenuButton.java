@@ -48,7 +48,9 @@ public class FloatingMenuButton extends FrameLayout implements View.OnTouchListe
     private int radius;
     private boolean isAnchored = false;
     private boolean isMenuOpened = false;
+    private boolean isMenuFirstOpen = true;
     private Context context;
+    private int first = 0;
     private CopyOnWriteArrayList<SubButton> subMenuButtons;
     private FloatingMenuAnimationHandler menuAnimationHandler;
     private FloatingMenuStateChangeListener stateChangeListener;
@@ -94,7 +96,7 @@ public class FloatingMenuButton extends FrameLayout implements View.OnTouchListe
         setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                toggleMenu();
+                toggleMenu(0);
             }
         });
         setOnTouchListener(this);
@@ -241,7 +243,9 @@ public class FloatingMenuButton extends FrameLayout implements View.OnTouchListe
         floatingMenuActionButtonClickListener.addClickListener(l);
     }
 
-    public void openMenu() {
+    public void openMenu(int first) {
+        Log.d("Mrc","openMenu()");
+        this.first = first;
         if (menuAnimationHandler != null && !menuAnimationHandler.isAnimating()) {
             Pair<Integer, Integer> angles = calculateDispositionAngles();
             Point center = calculateItemPositions(angles.first, angles.second);
@@ -258,6 +262,10 @@ public class FloatingMenuButton extends FrameLayout implements View.OnTouchListe
             if (stateChangeListener != null) {
                 stateChangeListener.onMenuOpened(this);
             }
+        }
+        if (first == 0){
+            openMenu(1);
+            this.first++;
         }
     }
 
@@ -281,11 +289,11 @@ public class FloatingMenuButton extends FrameLayout implements View.OnTouchListe
         isMenuOpened = false;
     }
 
-    public void toggleMenu() {
+    public void toggleMenu(int first) {
         if (isMenuOpened) {
             closeMenu();
         } else {
-            openMenu();
+            openMenu(first);
         }
     }
 
@@ -344,9 +352,9 @@ public class FloatingMenuButton extends FrameLayout implements View.OnTouchListe
         if (vg != null) {
             vg.removeView(view);
         }
-        Pair<Integer, Integer> angles = calculateDispositionAngles();
-        Point center = calculateItemPositions(angles.first, angles.second);
-        reOpenMenu(center);
+//        Pair<Integer, Integer> angles = calculateDispositionAngles();
+//        Point center = calculateItemPositions(angles.first, angles.second);
+//        reOpenMenu(center);
     }
 
 
