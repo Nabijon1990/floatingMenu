@@ -248,6 +248,7 @@ public class FloatingMenuButton extends FrameLayout implements View.OnTouchListe
                 }
             }
             menuAnimationHandler.animateMenuOpening(center, animationType);
+            menuAnimationHandler.cancelMenuAnimations();
             isMenuOpened = true;
             if (stateChangeListener != null) {
                 stateChangeListener.onMenuOpened(this);
