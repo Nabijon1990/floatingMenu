@@ -255,7 +255,10 @@ public class FloatingMenuButton extends FrameLayout implements View.OnTouchListe
             }
         }
         if (open == 0){
-            openMenu(1);
+            Point p = new Point();
+            p.x += 1 + currentPositionX;
+            p.y += 1 + currentPositionY;
+            reOpenMenu(p);
             this.open = 1;
         }
     }
